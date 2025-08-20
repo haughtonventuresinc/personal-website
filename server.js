@@ -1,38 +1,66 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static assets
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/videos', express.static(path.join(__dirname, 'videos')));
+// Middleware
+app.use(express.json()); // for parsing application/json
+app.use(express.static(__dirname)); // Serve static files from the root directory
 
-// Routes for pages
+// HTML Page Routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/challenge', (req, res) => {
-  res.sendFile(path.join(__dirname, 'challenge.html'));
+app.get('/music', (req, res) => {
+    res.sendFile(path.join(__dirname, 'fundamentals.html'));
 });
 
-app.get('/fundimentals', (req, res) => {
-  res.sendFile(path.join(__dirname, 'fundimentals.html'));
+app.get('/shop', (req, res) => {
+    res.sendFile(path.join(__dirname, 'challenge.html'));
 });
 
 app.get('/course', (req, res) => {
-  res.sendFile(path.join(__dirname, 'course.html'));
+    res.sendFile(path.join(__dirname, 'course.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// API Routes for Authentication
+
+// Login
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required.' });
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (email === adminEmail && password === adminPassword) {
+        const token = jwt.sign({ email: adminEmail, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: 'Invalid credentials.' });
+    }
 });
 
 // Fallback 404 for other routes
 app.use((req, res) => {
-  res.status(404).send('Page not found');
+    res.status(404).send('Page not found');
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
 });

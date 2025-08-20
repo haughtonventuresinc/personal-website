@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Simple transition for sidebar visibility */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-gray-800 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+        <a href="#" class="text-white flex items-center space-x-2 px-4">
+            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6"/>
+            </svg>
+            <span class="text-2xl font-extrabold">Admin Panel</span>
+        </a>
+
+        <nav>
+            <a href="#" data-section="home" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white nav-link">Home</a>
+            <a href="#" data-section="pages" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white nav-link">Page Editor</a>
+            <a href="#" data-section="settings" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white nav-link">Settings</a>
+            <a href="#" id="logout-button" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-red-700 hover:text-white">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-10 text-2xl font-bold">
+        <!-- Mobile menu button -->
+        <button id="menu-button" class="md:hidden mb-4 text-white">
+             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+            </svg>
+        </button>
+        
+        <div id="content-area">
+            <!-- Content will be loaded here -->
+            <section id="home-section">
+                <h1 class="text-3xl">Welcome to the Dashboard</h1>
+                <p class="mt-4 text-lg font-normal">Select a section from the sidebar to get started.</p>
+            </section>
+            <section id="pages-section" class="hidden">
+                 <h1 class="text-3xl">Page Editor</h1>
+                 <p class="mt-4 text-lg font-normal">Here you will be able to edit the content of your HTML pages.</p>
+            </section>
+            <section id="settings-section" class="hidden">
+                 <h1 class="text-3xl">Settings</h1>
+                 <p class="mt-4 text-lg font-normal">Manage your dashboard settings here.</p>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
