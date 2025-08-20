@@ -1,0 +1,19 @@
+{
+  "name": "webflow-clone",
+  "version": "1.0.0",
+  "description": "Node.js server to serve Webflow clone HTML pages and assets",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
