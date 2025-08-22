@@ -20,7 +20,7 @@ app.get('/music', (req, res) => {
 });
 
 app.get('/shop', (req, res) => {
-    res.sendFile(path.join(__dirname, 'challenge.html'));
+    res.sendFile(path.join(__dirname, 'shop.html'));
 });
 
 app.get('/course', (req, res) => {
