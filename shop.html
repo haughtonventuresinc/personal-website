@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOSES STONE | SHOP</title>
+  <link href="css/main.css" rel="stylesheet" type="text/css" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #000;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+    
+    .logo {
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      color: #000;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-link {
+      text-decoration: none;
+      color: #000;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    
+    .product-item {
+      margin-bottom: 40px;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .product-item:hover {
+      opacity: 0.7;
+    }
+    
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background-color: #e0e0e0;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    
+    .product-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+    
+    .product-code {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .product-price {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    /* Cart Styles */
+    .cart {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      padding-top: 48px;
+    }
+    
+    .cart.active {
+      display: flex;
+    }
+    
+    .cart-content {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      gap: 64px;
+      padding: 20px;
+      background-color: white;
+    }
+    
+    .cart-left, .cart-right {
+      width: calc(50% - 32px);
+      max-width: 40rem;
+      min-height: max-content;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .cart-right {
+      position: sticky;
+      top: 0;
+    }
+    
+    .cart-header {
+      display: flex;
+      width: 100%;
+      border-bottom: 1px solid black;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    
+    .cart-items {
+      max-height: 50vh;
+      overflow-y: auto;
+      margin: 8px 0;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .cart-empty {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+      text-transform: uppercase;
+    }
+    
+    .cart-summary {
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      padding: 8px 0;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    
+    .cart-total {
+      padding: 8px 0;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    
+    .form-wrapper {
+      margin-bottom: 20px;
+    }
+    
+    .form-input-container {
+      margin-bottom: 16px;
+    }
+    
+    .form-input-container label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid black;
+      background-color: white;
+      font-family: inherit;
+    }
+    
+    .form-multi-column-container {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .form-multi-column-container .form-input-container {
+      flex: 1;
+    }
+    
+    .payment-method-button {
+      border: 1px solid black;
+      background-color: white;
+      text-align: left;
+      cursor: pointer;
+    }
+    
+    .payment-method-button.selected {
+      background-color: #f5f5f5;
+    }
+    
+    .close-cart {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .add-to-cart-btn {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      text-transform: uppercase;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+      width: 100%;
+    }
+    
+    /* Product Detail Styles */
+    .product-detail {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    
+    .product-detail.active {
+      display: flex;
+    }
+    
+    .product-detail-content {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+    }
+    
+    .product-detail-image {
+      width: 60%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .product-detail-image img {
+      max-width: 100%;
+      max-height: 80vh;
+    }
+    
+    .product-detail-info {
+      width: 40%;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-detail-name {
+      font-size: 24px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    
+    .product-detail-code {
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    
+    .product-detail-price {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    
+    .size-selector {
+      margin-bottom: 30px;
+    }
+    
+    .size-selector-title {
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    
+    .size-options {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .size-option {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .size-option.selected {
+      background-color: #000;
+      color: #fff;
+    }
+    
+    .close-detail {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .add-to-cart-detail {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 15px;
+      text-transform: uppercase;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: auto;
+    }
+    
+    @media (max-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .cart-content {
+        flex-direction: column;
+      }
+      
+      .cart-left, .cart-right {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      .product-detail-content {
+        flex-direction: column;
+      }
+      
+      .product-detail-image,
+      .product-detail-info {
+        width: 100%;
+        padding: 20px 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      
+      .nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .form-multi-column-container {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a href="/" class="logo">Moses Stone</a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/shop" class="nav-link">Shop</a>
+        <a href="#" class="nav-link" id="cart-link">Cart (0)</a>
+      </nav>
+    </header>
+    
+    <div class="product-grid">
+      <!-- Row 1 -->
+      <div class="product-item" data-id="YZY-001" data-price="220" data-name="WARMUP BLACK">
+        <div class="product-image">
+          <img src="images/WARMUP-BLACK.png.webp" alt="Product YZY-001">
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-001</div>
+          <div class="product-price">$220</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-002" data-price="180" data-name="WARMUP OLIVE">
+        <div class="product-image">
+          <img src="images/WARMUP-OLIVE.png.webp" alt="Product YZY-002">
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-002</div>
+          <div class="product-price">$180</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-003" data-price="200" data-name="WARMUP PANTS MINT WHITE">
+        <div class="product-image">
+          <img src="images/WARMUPPANTS-MINTWHITE_1.png.webp" alt="Product YZY-003">
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-003</div>
+          <div class="product-price">$200</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-004" data-price="240" data-name="RECESS HOODIE">
+        <div class="product-image">
+          <img src="images/RECESSHOODIE-PFD.png.webp" alt="Product YZY-004">
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-004</div>
+          <div class="product-price">$240</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <!-- Row 2 -->
+      <div class="product-item" data-id="YZY-005" data-price="190" data-name="Product 5">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <polygon points="50,10 90,90 10,90" fill="#333" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-005</div>
+          <div class="product-price">$190</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-006" data-price="210" data-name="Product 6">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <line x1="20" y1="20" x2="80" y2="80" stroke="#333" stroke-width="5" />
+            <line x1="80" y1="20" x2="20" y2="80" stroke="#333" stroke-width="5" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-006</div>
+          <div class="product-price">$210</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-007" data-price="230" data-name="Product 7">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="#333" stroke-width="5" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-007</div>
+          <div class="product-price">$230</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-008" data-price="195" data-name="Product 8">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <ellipse cx="50" cy="50" rx="40" ry="25" fill="#333" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-008</div>
+          <div class="product-price">$195</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <!-- Row 3 -->
+      <div class="product-item" data-id="YZY-009" data-price="220" data-name="Product 9">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <path d="M50,20 L80,40 L80,70 L50,90 L20,70 L20,40 Z" fill="#333" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-009</div>
+          <div class="product-price">$220</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-010" data-price="250" data-name="Product 10">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <path d="M20,20 C30,10 70,10 80,20 C90,30 90,70 80,80 C70,90 30,90 20,80 C10,70 10,30 20,20 Z" fill="#333" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-010</div>
+          <div class="product-price">$250</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-011" data-price="180" data-name="Product 11">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <path d="M20,20 L80,20 L50,80 Z" fill="#333" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-011</div>
+          <div class="product-price">$180</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      
+      <div class="product-item" data-id="YZY-012" data-price="200" data-name="Product 12">
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%;">
+            <path d="M20,20 L80,20 L80,80 L20,80 Z M35,35 L65,35 L65,65 L35,65 Z" fill="#333" fill-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-code">YZY-012</div>
+          <div class="product-price">$200</div>
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="cart" id="cart" role="button" aria-label="Close cart" tabindex="0">
+    <button class="close-cart" id="close-cart">&times;</button>
+    <div class="cart-content" id="checkout" role="button" tabindex="0">
+      <div class="cart-left">
+        <div class="form-wrapper">
+          <h3 class="cart-header">Contact Information</h3>
+          <div class="form-input-container">
+            <label for="contact-email">Email Address</label>
+            <input type="text" id="contact-email" class="form-input" autocomplete="email">
+          </div>
+        </div>
+        
+        <div class="form-wrapper">
+          <h3 class="cart-header">Shipping Address</h3>
+          <div class="form-multi-column-container">
+            <div class="form-input-container">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" class="form-input" autocomplete="given-name">
+            </div>
+            <div class="form-input-container">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" class="form-input" autocomplete="family-name">
+            </div>
+          </div>
+          
+          <div class="form-input-container">
+            <label for="address">Address</label>
+            <input type="text" id="address" class="form-input" autocomplete="address-line1" placeholder="START TYPING YOUR ADDRESS...">
+          </div>
+          
+          <div class="form-multi-column-container">
+            <div class="form-input-container">
+              <label for="city">City</label>
+              <input type="text" id="city" class="form-input" autocomplete="address-level2">
+            </div>
+            <div class="form-input-container">
+              <label for="country">Country</label>
+              <select id="country" class="form-input" autocomplete="country">
+                <option disabled selected value="">SELECT COUNTRY</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+                <!-- More countries would be added here -->
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-multi-column-container">
+            <div class="form-input-container">
+              <label for="state">State / Province</label>
+              <input type="text" id="state" class="form-input" autocomplete="address-level1">
+            </div>
+            <div class="form-input-container">
+              <label for="zip">Zip / Postal Code</label>
+              <input type="text" id="zip" class="form-input" autocomplete="postal-code">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-wrapper">
+          <h3 class="cart-header">Payment Details</h3>
+          <div class="payment-method-button selected">
+            <div style="display: flex; width: 100%; align-items: center; gap: 16px; padding: 16px;">
+              <div style="display: flex; height: 40px; width: 40px; align-items: center; justify-content: center; border: 1px solid currentColor; background-color: black; color: white;">
+                <svg style="height: 20px; width: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect x="2" y="5" width="20" height="14" rx="2" stroke-width="2"></rect>
+                  <line x1="2" y1="10" x2="22" y2="10" stroke-width="2"></line>
+                </svg>
+              </div>
+              <div style="flex: 1; text-align: left;">
+                <h4 style="font-weight: 500; text-transform: uppercase;">Credit/Debit Card</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 16px;">
+            <div class="form-input-container">
+              <label for="cardNumber">Card Number</label>
+              <input id="cardNumber" type="text" placeholder="1234 5678 9012 3456" maxlength="23" autocomplete="cc-number" class="form-input">
+            </div>
+            
+            <div class="form-multi-column-container">
+              <div class="form-input-container">
+                <label for="expirationMonth">Month</label>
+                <select id="expirationMonth" autocomplete="cc-exp-month" class="form-input">
+                  <option value="">MM</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <!-- More months would be added here -->
+                </select>
+              </div>
+              <div class="form-input-container">
+                <label for="expirationYear">Year</label>
+                <select id="expirationYear" autocomplete="cc-exp-year" class="form-input">
+                  <option value="">YYYY</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <!-- More years would be added here -->
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-input-container">
+              <label for="cardCode">Security Code</label>
+              <input id="cardCode" type="text" placeholder="123" maxlength="4" autocomplete="cc-csc" class="form-input">
+            </div>
+            
+            <div class="form-input-container">
+              <label for="cardholderName">Cardholder Name</label>
+              <input id="cardholderName" type="text" placeholder="John Doe" autocomplete="cc-name" class="form-input">
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 12px; border: 1px solid black; padding: 12px 16px; cursor: pointer;">
+          <input type="checkbox" style="height: 20px; width: 20px; accent-color: black;">
+          <span style="text-transform: uppercase; font-size: 14px;">Billing address same as shipping</span>
+        </div>
+        
+        <button type="button" style="width: 100%; margin-top: 16px; background-color: black; color: white; border: 1px solid black; padding: 12px; text-transform: uppercase; cursor: pointer;">
+          Submit Order
+        </button>
+      </div>
+      
+      <div class="cart-right">
+        <h3 class="cart-header">Order Summary</h3>
+        
+        <div class="cart-items" id="cart-items">
+          <div class="cart-empty" id="cart-empty">
+            <span>Your cart is empty</span>
+          </div>
+          <!-- Cart items will be added here dynamically -->
+        </div>
+        
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>SUBTOTAL</span>
+            <span id="subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>SHIPPING</span>
+            <span>CALCULATED AT NEXT STEP</span>
+          </div>
+          <div class="summary-row">
+            <span>TAXES</span>
+            <span id="taxes">$0.00</span>
+          </div>
+        </div>
+        
+        <div class="cart-total">
+          <div class="summary-row">
+            <span>TOTAL</span>
+            <span id="total">$0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div class="product-detail" id="product-detail">
+    <button class="close-detail" id="close-detail">&times;</button>
+    <div class="product-detail-content">
+      <div class="product-detail-image">
+        <img id="detail-image" src="" alt="Product Detail">
+      </div>
+      <div class="product-detail-info">
+        <div class="product-detail-name" id="detail-name"></div>
+        <div class="product-detail-code" id="detail-code"></div>
+        <div class="product-detail-price" id="detail-price"></div>
+        
+        <div class="size-selector">
+          <div class="size-selector-title">Select Size</div>
+          <div class="size-options">
+            <div class="size-option" data-size="S">S</div>
+            <div class="size-option" data-size="M">M</div>
+            <div class="size-option" data-size="L">L</div>
+          </div>
+        </div>
+        
+        <button class="add-to-cart-detail" id="add-to-cart-detail">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cart = document.getElementById('cart');
+      const cartLink = document.getElementById('cart-link');
+      const closeCart = document.getElementById('close-cart');
+      const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+      const cartItems = document.getElementById('cart-items');
+      const cartEmpty = document.getElementById('cart-empty');
+      const subtotalElement = document.getElementById('subtotal');
+      const taxesElement = document.getElementById('taxes');
+      const totalElement = document.getElementById('total');
+      
+      // Product Detail Elements
+      const productDetail = document.getElementById('product-detail');
+      const closeDetail = document.getElementById('close-detail');
+      const detailImage = document.getElementById('detail-image');
+      const detailName = document.getElementById('detail-name');
+      const detailCode = document.getElementById('detail-code');
+      const detailPrice = document.getElementById('detail-price');
+      const sizeOptions = document.querySelectorAll('.size-option');
+      const addToCartDetail = document.getElementById('add-to-cart-detail');
+      
+      let selectedSize = null;
+      let currentProduct = null;
+      let cartProducts = [];
+      
+      // Open cart
+      cartLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        cart.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      // Close cart
+      closeCart.addEventListener('click', function() {
+        cart.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      // Product Item Click - Open Detail View
+      document.querySelectorAll('.product-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          // Don't open detail view if clicking the add to cart button
+          if (e.target.classList.contains('add-to-cart-btn') || 
+              e.target.closest('.add-to-cart-btn')) {
+            return;
+          }
+          
+          const productId = this.dataset.id;
+          const productName = this.dataset.name;
+          const productPrice = parseFloat(this.dataset.price);
+          const productImage = this.querySelector('img').src;
+          const productCode = this.querySelector('.product-code').textContent;
+          
+          // Set current product
+          currentProduct = {
+            id: productId,
+            name: productName,
+            price: productPrice,
+            image: productImage,
+            code: productCode
+          };
+          
+          // Update detail view
+          detailImage.src = productImage;
+          detailName.textContent = productName;
+          detailCode.textContent = productCode;
+          detailPrice.textContent = `$${productPrice.toFixed(2)}`;
+          
+          // Reset size selection
+          selectedSize = null;
+          sizeOptions.forEach(option => option.classList.remove('selected'));
+          
+          // Open detail view
+          productDetail.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      // Close detail view
+      closeDetail.addEventListener('click', function() {
+        productDetail.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      // Size selection
+      sizeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Remove selected class from all options
+          sizeOptions.forEach(opt => opt.classList.remove('selected'));
+          
+          // Add selected class to clicked option
+          this.classList.add('selected');
+          
+          // Set selected size
+          selectedSize = this.dataset.size;
+        });
+      });
+      
+      // Add to cart from detail view
+      addToCartDetail.addEventListener('click', function() {
+        if (!selectedSize) {
+          alert('Please select a size');
+          return;
+        }
+        
+        if (!currentProduct) return;
+        
+        // Create product with size
+        const product = {
+          ...currentProduct,
+          size: selectedSize,
+          id: `${currentProduct.id}-${selectedSize}` // Unique ID with size
+        };
+        
+        // Check if product with same size is already in cart
+        const existingProduct = cartProducts.find(p => p.id === product.id);
+        
+        if (existingProduct) {
+          existingProduct.quantity += 1;
+        } else {
+          cartProducts.push({
+            ...product,
+            quantity: 1
+          });
+        }
+        
+        // Close detail view
+        productDetail.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Update cart
+        updateCart();
+      });
+      
+      // Add to cart from product grid
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation(); // Prevent opening detail view
+          
+          const productItem = this.closest('.product-item');
+          const productId = productItem.dataset.id;
+          const productName = productItem.dataset.name;
+          const productPrice = parseFloat(productItem.dataset.price);
+          const productImage = productItem.querySelector('img').src;
+          
+          // Open detail view for size selection
+          currentProduct = {
+            id: productId,
+            name: productName,
+            price: productPrice,
+            image: productImage,
+            code: productItem.querySelector('.product-code').textContent
+          };
+          
+          // Update detail view
+          detailImage.src = productImage;
+          detailName.textContent = productName;
+          detailCode.textContent = currentProduct.code;
+          detailPrice.textContent = `$${productPrice.toFixed(2)}`;
+          
+          // Reset size selection
+          selectedSize = null;
+          sizeOptions.forEach(option => option.classList.remove('selected'));
+          
+          // Open detail view
+          productDetail.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      // Update cart display
+      function updateCart() {
+        // Update cart count
+        cartLink.textContent = `Cart (${cartProducts.reduce((total, product) => total + product.quantity, 0)})`;
+        
+        // Clear cart items
+        while (cartItems.firstChild) {
+          cartItems.removeChild(cartItems.firstChild);
+        }
+        
+        // Show/hide empty cart message
+        if (cartProducts.length === 0) {
+          cartEmpty.style.display = 'flex';
+        } else {
+          cartEmpty.style.display = 'none';
+          
+          // Add cart items
+          cartProducts.forEach(product => {
+            const cartItem = document.createElement('div');
+            cartItem.style.display = 'flex';
+            cartItem.style.gap = '16px';
+            cartItem.style.borderBottom = '1px solid #eee';
+            cartItem.style.paddingBottom = '16px';
+            
+            const itemImage = document.createElement('div');
+            itemImage.style.width = '80px';
+            itemImage.style.height = '80px';
+            
+            const img = document.createElement('img');
+            img.src = product.image;
+            img.alt = product.name;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            
+            itemImage.appendChild(img);
+            
+            const itemDetails = document.createElement('div');
+            itemDetails.style.flex = '1';
+            
+            const itemName = document.createElement('div');
+            itemName.textContent = product.name;
+            itemName.style.fontWeight = '500';
+            itemName.style.textTransform = 'uppercase';
+            
+            const itemSize = document.createElement('div');
+            itemSize.textContent = `Size: ${product.size || 'N/A'}`;
+            itemSize.style.fontSize = '14px';
+            itemSize.style.marginTop = '4px';
+            
+            const itemPrice = document.createElement('div');
+            itemPrice.textContent = `$${product.price.toFixed(2)}`;
+            
+            const itemQuantity = document.createElement('div');
+            itemQuantity.style.display = 'flex';
+            itemQuantity.style.alignItems = 'center';
+            itemQuantity.style.gap = '8px';
+            itemQuantity.style.marginTop = '8px';
+            
+            const decreaseBtn = document.createElement('button');
+            decreaseBtn.textContent = '-';
+            decreaseBtn.style.width = '24px';
+            decreaseBtn.style.height = '24px';
+            decreaseBtn.style.border = '1px solid black';
+            decreaseBtn.style.background = 'none';
+            decreaseBtn.style.cursor = 'pointer';
+            decreaseBtn.addEventListener('click', () => {
+              if (product.quantity > 1) {
+                product.quantity -= 1;
+              } else {
+                cartProducts = cartProducts.filter(p => p.id !== product.id);
+              }
+              updateCart();
+            });
+            
+            const quantityText = document.createElement('span');
+            quantityText.textContent = product.quantity;
+            
+            const increaseBtn = document.createElement('button');
+            increaseBtn.textContent = '+';
+            increaseBtn.style.width = '24px';
+            increaseBtn.style.height = '24px';
+            increaseBtn.style.border = '1px solid black';
+            increaseBtn.style.background = 'none';
+            increaseBtn.style.cursor = 'pointer';
+            increaseBtn.addEventListener('click', () => {
+              product.quantity += 1;
+              updateCart();
+            });
+            
+            itemQuantity.appendChild(decreaseBtn);
+            itemQuantity.appendChild(quantityText);
+            itemQuantity.appendChild(increaseBtn);
+            
+            itemDetails.appendChild(itemName);
+            itemDetails.appendChild(itemSize);
+            itemDetails.appendChild(itemPrice);
+            itemDetails.appendChild(itemQuantity);
+            
+            const removeButton = document.createElement('button');
+            removeButton.textContent = '×';
+            removeButton.style.background = 'none';
+            removeButton.style.border = 'none';
+            removeButton.style.fontSize = '20px';
+            removeButton.style.cursor = 'pointer';
+            removeButton.addEventListener('click', () => {
+              cartProducts = cartProducts.filter(p => p.id !== product.id);
+              updateCart();
+            });
+            
+            cartItem.appendChild(itemImage);
+            cartItem.appendChild(itemDetails);
+            cartItem.appendChild(removeButton);
+            
+            cartItems.appendChild(cartItem);
+          });
+        }
+        
+        // Update totals
+        const subtotal = cartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
+        const taxes = subtotal * 0.1; // Assuming 10% tax rate
+        const total = subtotal + taxes;
+        
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+        taxesElement.textContent = `$${taxes.toFixed(2)}`;
+        totalElement.textContent = `$${total.toFixed(2)}`;
+      }
+    });
+  </script>
+</body>
+</html>
