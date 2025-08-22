@@ -58,5 +58,18 @@
       "L",
       "XL"
     ]
+  },
+  {
+    "id": "NaN",
+    "name": "test",
+    "price": 150,
+    "description": "test item",
+    "category": "Jackets",
+    "inStock": true,
+    "sizes": [
+      "XL",
+      "XL"
+    ],
+    "image": "/images/image-1755901814869-925855360.png"
   }
 ]

@@ -21,9 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageTypeRadios = document.querySelectorAll('input[name="image-type"]');
     const imageUrlInput = document.getElementById('image-url-input');
     const svgIconInput = document.getElementById('svg-icon-input');
-    const productImageInput = document.getElementById('product-image');
+    const productImageSelect = document.getElementById('product-image');
+    const customImageUrlInput = document.getElementById('custom-image-url');
     const productSvgInput = document.getElementById('product-svg');
+    const imageUploadInput = document.getElementById('image-upload');
+    const fileNameDisplay = document.getElementById('file-name');
+    const imagePreviewContainer = document.getElementById('image-preview');
+    const previewImage = document.getElementById('preview-image');
     const sizeCheckboxes = document.querySelectorAll('input[name="size"]');
+    const saveBtn = document.getElementById('save-btn');
+    
+    // Track uploaded image path
+    let uploadedImagePath = null;
     
     let products = [];
     let currentProductId = null;
@@ -71,11 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const formattedPrice = `$${parseFloat(product.price).toFixed(2)}`;
             
             row.innerHTML = `
-                <td class="py-3 px-4">${product.id}</td>
                 ${imageCell.outerHTML}
                 <td class="py-3 px-4">${product.name}</td>
                 <td class="py-3 px-4">${formattedPrice}</td>
-                <td class="py-3 px-4">${product.category}</td>
+                <td class="py-3 px-4 hidden md:table-cell">${product.category}</td>
                 <td class="py-3 px-4">
                     <div class="flex space-x-2">
                         <button class="edit-btn bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 rounded text-sm" data-id="${product.id}">Edit</button>
@@ -99,11 +107,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Show product modal for adding new product
     const showAddProductModal = () => {
+        const resetForm = () => {
+            productForm.reset();
+            productIdInput.value = generateProductId();
+            imageTypeRadios[0].checked = true;
+            toggleImageInputs();
+            currentProductId = null;
+            uploadedImagePath = null;
+            imagePreviewContainer.classList.add('hidden');
+            fileNameDisplay.textContent = 'No file chosen';
+        };
+        resetForm();
         modalTitle.textContent = 'Add New Product';
-        productForm.reset();
-        productIdInput.value = generateProductId();
-        imageTypeRadios[0].checked = true;
-        toggleImageInputs();
         productModal.classList.remove('hidden');
     };
     
@@ -124,9 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (product.svgIcon) {
             imageTypeRadios[1].checked = true;
             productSvgInput.value = product.svgIcon;
+            imagePreviewContainer.classList.add('hidden');
         } else {
             imageTypeRadios[0].checked = true;
-            productImageInput.value = product.image || '';
+            
+            // Check if the image is one of our predefined options
+            const imageUrl = product.image || '';
+            const imageOption = Array.from(productImageSelect.options).find(option => option.value === imageUrl);
+            
+            if (imageOption) {
+                productImageSelect.value = imageUrl;
+                customImageUrlInput.value = '';
+                uploadedImagePath = null;
+                imagePreviewContainer.classList.add('hidden');
+            } else {
+                productImageSelect.value = '';
+                customImageUrlInput.value = imageUrl;
+                uploadedImagePath = imageUrl;
+                
+                // Show preview if it's a valid image URL
+                if (imageUrl) {
+                    previewImage.src = imageUrl;
+                    imagePreviewContainer.classList.remove('hidden');
+                } else {
+                    imagePreviewContainer.classList.add('hidden');
+                }
+            }
         }
         
         toggleImageInputs();
@@ -210,9 +248,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Listeners
     
     // Add product button
-    addProductBtn.addEventListener('click', showAddProductModal);
-    
-    // Cancel product form
+    addProductBtn.addEventListener('click', () => {
+        const resetForm = () => {
+            productForm.reset();
+            productIdInput.value = generateProductId();
+            imageTypeRadios[0].checked = true;
+            toggleImageInputs();
+            currentProductId = null;
+            uploadedImagePath = null;
+            imagePreviewContainer.classList.add('hidden');
+            fileNameDisplay.textContent = 'No file chosen';
+        };
+        resetForm();
+        productModal.classList.remove('hidden');
+    });
+
     cancelProductBtn.addEventListener('click', () => {
         productModal.classList.add('hidden');
         currentProductId = null;
@@ -255,11 +305,76 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add image or SVG based on selection
         const imageType = document.querySelector('input[name="image-type"]:checked').value;
         if (imageType === 'image') {
-            product.image = productImageInput.value;
+            // Check if we have a file to upload
+            const fileInput = imageUploadInput;
+            if (fileInput.files && fileInput.files[0]) {
+                // We'll handle the upload before saving the product
+                const formData = new FormData();
+                formData.append('image', fileInput.files[0]);
+                
+                // Get auth token
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('You must be logged in to upload images');
+                    return;
+                }
+                
+                // Check if token is expired
+                if (typeof isTokenExpired === 'function' && isTokenExpired(token)) {
+                    alert('Your session has expired. Please log in again.');
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // Show loading state
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Uploading...';
+                
+                // Upload the image first
+                fetch('/upload-image', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to upload image');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Use the uploaded image path
+                    product.image = data.imagePath;
+                    saveProduct(product);
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                    alert('Failed to upload image. Please try again.');
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save';
+                });
+                
+                // Return early as we'll save the product after upload completes
+                return;
+            } else {
+                // Use selected image or custom URL if provided
+                const selectedImage = productImageSelect.value;
+                const customUrl = customImageUrlInput.value.trim();
+                product.image = customUrl || selectedImage || uploadedImagePath;
+            }
         } else {
             product.svgIcon = productSvgInput.value;
         }
         
+        // Save the product (called directly or after image upload)
+        saveProduct(product);
+    });
+    
+    // Function to save product after potential image upload
+    const saveProduct = (product) => {
         // Update or add product
         const existingIndex = products.findIndex(p => p.id === product.id);
         if (existingIndex !== -1) {
@@ -268,9 +383,42 @@ document.addEventListener('DOMContentLoaded', () => {
             products.push(product);
         }
         
-        saveProducts();
-        productModal.classList.add('hidden');
-        currentProductId = null;
+        // Save products
+        saveProducts()
+            .then(() => {
+                productModal.classList.add('hidden');
+                renderProductList();
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save';
+            })
+            .catch(error => {
+                console.error('Error saving products:', error);
+                alert('Failed to save product. Please try again.');
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save';
+            });
+    };
+    
+    // Image upload handling
+    imageUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // Update file name display
+        fileNameDisplay.textContent = file.name;
+        
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            imagePreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+        
+        // Reset other image inputs
+        productImageSelect.value = '';
+        customImageUrlInput.value = '';
+        uploadedImagePath = null;
     });
     
     // Initialize

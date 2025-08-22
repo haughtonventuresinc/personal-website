@@ -3,9 +3,35 @@ const express = require('express');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join(__dirname, 'images'));
+    },
+    filename: function(req, file, cb) {
+        // Create unique filename with original extension
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: function(req, file, cb) {
+        // Accept images only
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+});
 
 // Middleware
 app.use(express.json()); // for parsing application/json
@@ -40,13 +66,26 @@ app.get('/dashboard', (req, res) => {
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    console.log('Authentication middleware triggered');
+    console.log('Headers:', JSON.stringify(req.headers));
     
-    if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+    const authHeader = req.headers['authorization'];
+    console.log('Auth header:', authHeader);
+    
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log('Token extracted:', token ? 'Token present' : 'No token');
+    
+    if (!token) {
+        console.log('Authentication failed: No token provided');
+        return res.status(401).json({ message: 'Access denied. No token provided.' });
+    }
     
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Invalid or expired token.' });
+        if (err) {
+            console.log('Authentication failed: Invalid token', err.message);
+            return res.status(403).json({ message: 'Invalid or expired token.' });
+        }
+        console.log('Authentication successful for user:', user.email);
         req.user = user;
         next();
     });
@@ -79,6 +118,49 @@ app.post('/update-products', authenticateToken, (req, res) => {
     }
 });
 
+// Image upload endpoint
+app.post('/upload-image', (req, res, next) => {
+    console.log('Upload endpoint hit');
+    console.log('Request headers:', JSON.stringify(req.headers));
+    next();
+}, upload.single('image'), (req, res, next) => {
+    console.log('Multer middleware processed');
+    console.log('File received:', req.file ? 'Yes' : 'No');
+    if (req.file) {
+        console.log('File details:', {
+            filename: req.file.filename,
+            mimetype: req.file.mimetype,
+            size: req.file.size
+        });
+    }
+    next();
+}, authenticateToken, (req, res) => {
+    console.log('Processing upload after authentication');
+    try {
+        // Verify user is admin
+        if (req.user.role !== 'admin') {
+            console.log('Upload rejected: User is not admin');
+            return res.status(403).json({ message: 'Access denied. Admin privileges required.' });
+        }
+        
+        if (!req.file) {
+            console.log('Upload rejected: No file in request');
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+        
+        // Return the path to the uploaded file (relative to the server root)
+        const imagePath = '/images/' + req.file.filename;
+        console.log('Upload successful, returning path:', imagePath);
+        res.json({ 
+            message: 'Image uploaded successfully',
+            imagePath: imagePath
+        });
+    } catch (error) {
+        console.error('Error in upload handler:', error);
+        res.status(500).json({ message: 'Error uploading image' });
+    }
+});
+
 // Login
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
@@ -91,7 +173,7 @@ app.post('/api/login', (req, res) => {
     const adminPassword = process.env.ADMIN_PASSWORD;
 
     if (email === adminEmail && password === adminPassword) {
-        const token = jwt.sign({ email: adminEmail, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email: adminEmail, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.json({ token });
     } else {
         res.status(401).json({ message: 'Invalid credentials.' });
