@@ -12,6 +12,7 @@
   animation: fadeIn 1.5s ease-in-out forwards;
   pointer-events: none; /* Allow clicks to pass through the logo */
 }
+.wf-intro-overlay.wf-intro-fixed { position: fixed; left: 0; top: 0; }
 
 @keyframes fadeIn {
   0% {
@@ -46,6 +47,7 @@
 section.section.split-col {
   width: 100vw;
   min-height: 100vh;
+  position: relative; /* anchor intro overlay */
 }
 
 /* When initialized, ensure only the two carousels are visible at the top level */
@@ -96,7 +98,55 @@ section.section.split-col.wf-initialized > .col-right {
   height: 100vh;
   overflow: hidden; /* no bleed outside the two columns */
   position: relative; /* anchor nav buttons */
+  opacity: 1;
+  transition: opacity .5s ease;
 }
+
+/* Full-width intro overlay so the logo animates centered across both sides */
+.wf-intro-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20; /* above carousels and nav */
+  pointer-events: auto; /* block interaction during intro */
+  opacity: 1;
+  transition: opacity .6s ease;
+  background: rgba(0,0,0,0.9); /* solid dark backdrop for visibility */
+}
+.wf-intro-overlay .wf-intro-box { display: flex; align-items: center; justify-content: center; }
+.wf-intro-overlay .intro-cover { height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+/* Ensure visibility if absolute positioning causes stacking issues */
+.wf-intro-overlay .intro-logo { position: relative; transform: none; z-index: 100; max-width: 360px; width: 60%; height: auto; }
+.wf-intro-overlay.wf-intro-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* During intro, hide both carousels completely */
+section.section.split-col.wf-intro-active .wf-dual-container {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Also hide via body class (when overlay is at body root) */
+body.wf-intro-active section.section.split-col .wf-dual-container {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide nav buttons while intro is active */
+section.section.split-col.wf-intro-active .wf-nav {
+  opacity: 0;
+  pointer-events: none;
+}
+body.wf-intro-active .wf-nav { opacity: 0; pointer-events: none; }
+
+/* Prevent scrolling during intro */
+body.wf-intro-active { overflow: hidden; }
 
 /* Optional nav buttons; kept subtle and non-intrusive */
 .wf-nav {
@@ -117,9 +167,9 @@ section.section.split-col.wf-initialized > .col-right {
   transition: background .2s ease;
 }
 .wf-nav:hover { background: rgba(0,0,0,0.55); }
-/* Place buttons around the center seam (50vw) */
-.wf-prev { left: calc(50vw - 60px); }
-.wf-next { left: calc(50vw + 20px); }
+/* Place buttons at the outer edges */
+.wf-prev { left: 10px; }
+.wf-next { right: 10px; }
 
 /* Respect Webflow transforms by not overriding transform on child elements */
 

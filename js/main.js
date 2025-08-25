@@ -1,6 +1,39 @@
 // Main javascript file
 
 (function () {
+  // Independent intro overlay (works even without #Experiences)
+  function setupIntroOverlay() {
+    const bodyIntro = document.querySelector('body > .intro-cover');
+    if (!bodyIntro) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'wf-intro-overlay wf-intro-fixed';
+    const box = document.createElement('div');
+    box.className = 'wf-intro-box';
+    overlay.appendChild(box);
+    document.body.insertBefore(overlay, document.body.firstChild);
+    box.appendChild(bodyIntro); // move existing node to preserve animations
+
+    document.body.classList.add('wf-intro-active');
+
+    let minTimeElapsed = false;
+    let docReady = document.readyState === 'complete';
+    function tryHide() {
+      if (minTimeElapsed && docReady) {
+        overlay.classList.add('wf-intro-hidden');
+        document.body.classList.remove('wf-intro-active');
+      }
+    }
+    setTimeout(function () { minTimeElapsed = true; tryHide(); }, 2000);
+    if (!docReady) {
+      window.addEventListener('load', function onLoadOnce() {
+        docReady = true;
+        window.removeEventListener('load', onLoadOnce);
+        tryHide();
+      });
+    } else {
+      tryHide();
+    }
+  }
   // Run after window load so Webflow interactions have initialized
   function init() {
     const section = document.querySelector('section#Experiences.section.split-col');
@@ -93,9 +126,8 @@
       updateBoth();
     }
 
-    // Remove any leftover original top-level nodes that were not moved (e.g., intro-cover)
-    // Keep intro-cover at top if present
-    const introCover = section.querySelector(':scope > .intro-cover');
+    // Intro overlay is handled independently at body level.
+
     // Clean-up: remove any stray .col-left/.col-right that were not moved (should be none)
     section.querySelectorAll(':scope > .col-left, :scope > .col-right').forEach((n) => {
       if (n.parentElement === section) {
@@ -112,15 +144,13 @@
       }
     });
 
-    // Ensure the intro cover (logo) stays above and not wrapped
-    if (introCover && introCover !== dual.previousElementSibling) {
-      section.insertBefore(introCover, dual);
-    }
-
     // Mark as initialized for CSS guards
     section.dataset.wfCarouselInit = '1';
     section.classList.add('wf-initialized');
   }
+
+  // Start intro overlay immediately
+  setupIntroOverlay();
 
   if (document.readyState === 'complete') {
     setTimeout(init, 0);
