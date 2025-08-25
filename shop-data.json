@@ -1,6 +1,6 @@
 [
   {
-    "id": "YZY-001",
+    "id": "STNE-001",
     "name": "WARMUP BLACK",
     "description": "Premium quality black warmup jacket with minimalist design",
     "price": 220,
@@ -15,7 +15,7 @@
     ]
   },
   {
-    "id": "YZY-002",
+    "id": "STNE-002",
     "name": "WARMUP OLIVE",
     "description": "Stylish olive warmup jacket for everyday comfort",
     "price": 180,
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "id": "YZY-003",
+    "id": "STNE-003",
     "name": "WARMUP PANTS MINT WHITE",
     "description": "Comfortable mint white pants with modern cut",
     "price": 200,
@@ -45,7 +45,7 @@
     ]
   },
   {
-    "id": "YZY-004",
+    "id": "STNE-004",
     "name": "RECESS HOODIE",
     "description": "Premium hoodie with signature M_Stone design",
     "price": 240,
@@ -60,16 +60,15 @@
     ]
   },
   {
-    "id": "NaN",
+    "id": "STNE-005",
     "name": "test",
-    "price": 150,
+    "price": 250,
     "description": "test item",
     "category": "Jackets",
     "inStock": true,
     "sizes": [
-      "XL",
       "XL"
     ],
-    "image": "/images/image-1755901814869-925855360.png"
+    "image": "/images/image-1755903061376-982379325.png"
   }
 ]

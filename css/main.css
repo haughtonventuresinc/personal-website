@@ -275,7 +275,7 @@ html.w-mod-touch * {
 }
 
 input.w-button {
-  -webkit-appearance: button;
+  appearance: button;
 }
 
 html[data-w-dynpage] [data-w-cloak] {
@@ -399,7 +399,6 @@ fieldset {
 
 button, [type="button"], [type="reset"] {
   cursor: pointer;
-  -webkit-appearance: button;
   border: 0;
 }
 
@@ -1116,7 +1115,6 @@ textarea.w-input, textarea.w-select {
   text-align: center;
   clear: both;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  tap-highlight-color: rgba(0, 0, 0, 0);
   background: #ddd;
   height: 300px;
   position: relative;
@@ -1147,7 +1145,6 @@ textarea.w-input, textarea.w-select {
   z-index: 2;
   text-align: center;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  tap-highlight-color: rgba(0, 0, 0, 0);
   height: 40px;
   margin: auto;
   padding-top: 10px;
@@ -1214,7 +1211,6 @@ textarea.w-input, textarea.w-select {
   cursor: pointer;
   color: #fff;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -1361,9 +1357,6 @@ textarea.w-input, textarea.w-select {
   color: #fff;
   text-align: center;
   z-index: 2000;
-  opacity: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
   -webkit-tap-highlight-color: transparent;
   background: rgba(0, 0, 0, .9);
   outline: 0;
@@ -1378,7 +1371,6 @@ textarea.w-input, textarea.w-select {
   bottom: 0;
   left: 0;
   right: 0;
-  -webkit-transform: translate(0);
 }
 
 .w-lightbox-backdrop, .w-lightbox-container {
@@ -1849,7 +1841,6 @@ textarea.w-input, textarea.w-select {
   float: right;
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;

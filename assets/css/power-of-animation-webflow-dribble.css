@@ -170,7 +170,7 @@ td, th {
 
 @font-face {
   font-family: webflow-icons;
-  src: url("data:application/x-font-ttf;charset=utf-8;base64,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") format("truetype");
+  src: url("data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAwT1MvMg8SBiUAAAC8AAAAYGNtYXDpP+a4AAABHAAAAFxnYXNwAAAAEAAAAXgAAAAIZ2x5ZmhS2XEAAAGAAAADHGhlYWQTFw3HAAAEnAAAADZoaGVhCXYFgQAABNQAAAAkaG10eCe4A1oAAAT4AAAAMGxvY2EDtALGAAAFKAAAABptYXhwABAAPgAABUQAAAAgbmFtZSoCsMsAAAVkAAABznBvc3QAAwAAAAAHNAAAACAAAwP4AZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADpAwPA/8AAQAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAQAAAAAwACAACAAQAAQAg5gPpA//9//8AAAAAACDmAOkA//3//wAB/+MaBBcIAAMAAQAAAAAAAAAAAAAAAAABAAH//wAPAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEBIAAAAyADgAAFAAAJAQcJARcDIP5AQAGA/oBAAcABwED+gP6AQAABAOAAAALgA4AABQAAEwEXCQEH4AHAQP6AAYBAAcABwED+gP6AQAAAAwDAAOADQALAAA8AHwAvAAABISIGHQEUFjMhMjY9ATQmByEiBh0BFBYzITI2PQE0JgchIgYdARQWMyEyNj0BNCYDIP3ADRMTDQJADRMTDf3ADRMTDQJADRMTDf3ADRMTDQJADRMTAsATDSANExMNIA0TwBMNIA0TEw0gDRPAEw0gDRMTDSANEwAAAAABAJ0AtAOBApUABQAACQIHCQEDJP7r/upcAXEBcgKU/usBFVz+fAGEAAAAAAL//f+9BAMDwwAEAAkAABcBJwEXAwE3AQdpA5ps/GZsbAOabPxmbEMDmmz8ZmwDmvxmbAOabAAAAgAA/8AEAAPAAB0AOwAABSInLgEnJjU0Nz4BNzYzMTIXHgEXFhUUBw4BBwYjNTI3PgE3NjU0Jy4BJyYjMSIHDgEHBhUUFx4BFxYzAgBqXV6LKCgoKIteXWpqXV6LKCgoKIteXWpVSktvICEhIG9LSlVVSktvICEhIG9LSlVAKCiLXl1qal1eiygoKCiLXl1qal1eiygoZiEgb0tKVVVKS28gISEgb0tKVVVKS28gIQABAAABwAIAA8AAEgAAEzQ3PgE3NjMxFSIHDgEHBhUxIwAoKIteXWpVSktvICFmAcBqXV6LKChmISBvS0pVAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -179,7 +179,7 @@ td, th {
   speak: none;
   font-variant: normal;
   text-transform: none;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiaseds;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
   font-weight: normal;
@@ -1074,52 +1074,6 @@ textarea.w-input, textarea.w-select {
   line-height: 18px;
 }
 
-.w-widget-twitter-count-shim:not(.w--vertical) {
-  margin-left: 5px;
-  margin-right: 8px;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical).w--large {
-  margin-left: 6px;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical):before, .w-widget-twitter-count-shim:not(.w--vertical):after {
-  content: " ";
-  pointer-events: none;
-  border: solid rgba(0, 0, 0, 0);
-  width: 0;
-  height: 0;
-  position: absolute;
-  top: 50%;
-  left: 0;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical):before {
-  border-width: 4px;
-  border-color: rgba(117, 134, 150, 0) #5d6c7b rgba(117, 134, 150, 0) rgba(117, 134, 150, 0);
-  margin-top: -4px;
-  margin-left: -9px;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical).w--large:before {
-  border-width: 5px;
-  margin-top: -5px;
-  margin-left: -10px;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical):after {
-  border-width: 4px;
-  border-color: rgba(255, 255, 255, 0) #fff rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
-  margin-top: -4px;
-  margin-left: -8px;
-}
-
-.w-widget-twitter-count-shim:not(.w--vertical).w--large:after {
-  border-width: 5px;
-  margin-top: -5px;
-  margin-left: -9px;
-}
-
 .w-widget-twitter-count-shim.w--vertical {
   width: 61px;
   height: 33px;
@@ -1370,11 +1324,11 @@ textarea.w-input, textarea.w-select {
   vertical-align: top;
   color: #222;
   text-align: left;
-  white-space: nowrap;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
   text-decoration: none;
+  display: inline-block;
   position: relative;
 }
 
@@ -1463,10 +1417,6 @@ textarea.w-input, textarea.w-select {
   bottom: 0;
   left: 0;
   right: 0;
-  -webkit-transform: translate(0);
-}
-
-.w-lightbox-backdrop, .w-lightbox-container {
   -webkit-overflow-scrolling: touch;
   height: 100%;
   overflow: auto;
@@ -2207,10 +2157,12 @@ a {
 }
 
 .section.split-col {
-  background-color: #000;
-  height: 100vh;
   display: flex;
-  overflow: clip;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  overflow: hidden;
+  height: 100vh;
+  width: 200%;
 }
 
 .img-child {
@@ -2326,8 +2278,7 @@ a {
   height: 100svh;
   transition: padding .8s cubic-bezier(.77, 0, .175, 1);
   display: flex;
-  position: absolute;
-  left: 0;
+  position: relative;
 }
 
 .col-left:hover {
@@ -2354,8 +2305,7 @@ a {
   width: 50%;
   height: 100svh;
   transition: padding .8s cubic-bezier(.77, 0, .175, 1);
-  position: absolute;
-  right: 0;
+  position: relative;
 }
 
 .col-right:hover {
@@ -2666,10 +2616,11 @@ a {
 }
 
 .menu-scroll-hide {
-  width: 100%;
   height: auto;
+  width: 100px;
   position: absolute;
   overflow: hidden;
+  right: 10px;
 }
 
 .bg-dark {
@@ -3207,4 +3158,58 @@ a {
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+/* Add specific IDs for the new columns */
+#col-right-2, #col-right-3 {
+  background-color: var(--black);
+  width: 25%;
+  height: 100svh;
+  transition: padding .8s cubic-bezier(.77, 0, .175, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+#col-right-2:hover, #col-right-3:hover {
+  padding: 1rem;
+}
+
+/* Ensure consistent animation behavior */
+#col-right-2 .video-bg, #col-right-3 .video-bg {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
+
+@media screen and (max-width: 991px) {
+  #col-right-2, #col-right-3 {
+    width: 100%;
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #col-right-2, #col-right-3 {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  #col-right-2, #col-right-3 {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  #col-right-2:hover, #col-right-3:hover {
+    padding: 0;
+  }
 }

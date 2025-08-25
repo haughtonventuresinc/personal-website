@@ -205,11 +205,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // Generate a unique product ID
+    // Generate a unique product ID in STNE-001 format
     const generateProductId = () => {
-        const existingIds = products.map(p => parseInt(p.id));
+        // Extract numeric parts from existing IDs (handle both YZY-### and STNE-### formats)
+        const existingIds = products
+            .map(p => {
+                // Extract the numeric part after the dash from either format
+                const match = p.id.match(/(?:YZY|STNE)-(\d+)/);
+                return match ? parseInt(match[1]) : 0;
+            })
+            .filter(id => !isNaN(id));
+        
+        // Find the max ID number or start at 0
         const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 0;
-        return (maxId + 1).toString();
+        
+        // Format with leading zeros (e.g., STNE-001)
+        const nextId = maxId + 1;
+        const paddedId = nextId.toString().padStart(3, '0');
+        
+        return `STNE-${paddedId}`;
     };
     
     // Save products to server
